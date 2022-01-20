@@ -1,6 +1,7 @@
 # Request-Axios
-The simplest way to migrate 
-One line of code will help you migrate from request library to axios library.
+The simplest way to migrate from request library to axios library
+
+Just, modify only one line of code.
 
 # How to use
 
