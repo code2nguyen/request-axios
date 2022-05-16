@@ -22,7 +22,7 @@
   "author": "code2nguyen@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.25.0",
+    "axios": "^0.27.2",
     "qs": "^6.10.3"
   },
   "devDependencies": {
