@@ -4,9 +4,12 @@ const { stringify } = require('qs');
 
 function request(requestOptions, requestCallback) {
   requestOptions.url = requestOptions.url || requestOptions.uri;
-  requestOptions.data = requestOptions.data || requestOptions.json;
-  if (requestOptions.form && requestOptions.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
-    requestOptions.data = stringify(requestOptions.form);
+  requestOptions.data = requestOptions.data || requestOptions.json || requestOptions.formData;
+  if (requestOptions.headers && requestOptions.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+    const form = requestOptions.form || requestOptions.formData;
+    if (form) {
+      requestOptions.data = stringify(form);
+    }
   }
 
   const callbackFunction = callbackify(() => axios(requestOptions));
