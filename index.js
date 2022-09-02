@@ -1,11 +1,18 @@
-const { callbackify } = require('util');
-const axios = require('axios');
-const { stringify } = require('qs');
+const { callbackify } = require("util");
+const axios = require("axios");
+const { stringify } = require("qs");
 
 function request(requestOptions, requestCallback) {
   requestOptions.url = requestOptions.url || requestOptions.uri;
-  requestOptions.data = requestOptions.data || requestOptions.json || requestOptions.formData;
-  if (requestOptions.headers && requestOptions.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+  requestOptions.data =
+    requestOptions.data || typeof requestOptions.json === "object"
+      ? requestOptions.json
+      : requestOptions.formData || {};
+  if (
+    requestOptions.headers &&
+    requestOptions.headers["Content-Type"] ===
+      "application/x-www-form-urlencoded"
+  ) {
     const form = requestOptions.form || requestOptions.formData;
     if (form) {
       requestOptions.data = stringify(form);
@@ -17,7 +24,11 @@ function request(requestOptions, requestCallback) {
     if (error) {
       if (error.response) {
         error.statusCode = error.response.status;
-        response = error.response;
+        response = { ...error.response };
+        // Flat response data to error object.
+        error = error.response.data
+          ? { ...error, ...error.response.data }
+          : error;
       }
     }
     if (response) {
@@ -27,26 +38,24 @@ function request(requestOptions, requestCallback) {
     }
     requestCallback(error, response, response ? response.data : null);
   });
-};
+}
 
 // organize params for patch, post, put, head, del
 function initParams(uri, options, callback) {
-  if (typeof options === 'function') {
+  if (typeof options === "function") {
     callback = options;
   }
 
   let params = {};
-  if (options !== null && typeof options === 'object') {
+  if (options !== null && typeof options === "object") {
     params = { ...params, ...options, uri };
-  } else if (typeof uri === 'string') {
+  } else if (typeof uri === "string") {
     params = { ...params, uri };
   } else {
     params = { ...params, ...uri };
     params.callback = callback || params.callback;
     return params;
   }
-
-
 }
 
 function verbFunc(verb) {
@@ -58,8 +67,10 @@ function verbFunc(verb) {
   };
 }
 
-['get', 'delete', 'head', 'post', 'put', 'patch', 'options'].forEach((method) => {
-  request[method] = verbFunc(method);
-});
+["get", "delete", "head", "post", "put", "patch", "options"].forEach(
+  (method) => {
+    request[method] = verbFunc(method);
+  }
+);
 
 module.exports = request;
