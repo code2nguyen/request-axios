@@ -1,13 +1,13 @@
 {
   "name": "@c2n/request-axios",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "Migration request to axios",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.com",
+    "registry": "https://registry.npmjs.org",
     "access": "public"
   },
   "repository": {
@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.27.2",
-    "qs": "^6.10.3"
+    "qs": "^6.11.0"
   },
   "devDependencies": {
     "chai": "^4.3.4",
