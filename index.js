@@ -24,11 +24,9 @@ function request(requestOptions, requestCallback) {
     if (error) {
       if (error.response) {
         error.statusCode = error.response.status;
-        response = { ...error.response };
+        response = error.response;
         // Flat response data to error object.
-        error = error.response.data
-          ? { ...error, error: error.response.data }
-          : error;
+        if (error.response.data) error.error = error.response.data;
       }
     }
     if (response) {
