@@ -23,10 +23,12 @@ function request(requestOptions, requestCallback) {
   callbackFunction((error, response) => {
     if (error) {
       if (error.response) {
-        error.statusCode = error.response.status;
-        response = error.response;
+        response = { ...error.response };
+
         // Flat response data to error object.
-        if (error.response.data) error.error = error.response.data;
+        error = error.response;
+        error.statusCode = error.status;
+        error.error = error.response.data;
       }
     }
     if (response) {
