@@ -28,7 +28,7 @@ function request(requestOptions, requestCallback) {
         // Flat response data to error object.
         error = error.response;
         error.statusCode = error.status;
-        error.error = error.response.data;
+        error.error = error.data;
       }
     }
     if (response) {
